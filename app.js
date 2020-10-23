@@ -77,13 +77,26 @@ app.post("/compose", function(req, res){
   });
 });
 
+app.post("/delete", function(req,res){
+  const id = req.body.id;
+
+  Post.deleteOne({_id:id}, function(err){
+    if(err){
+      console.log(err);
+    } else{
+      res.redirect("/");
+    }
+  })
+})
+
 app.get("/posts/:id", function(req, res){
   const id = req.params.id;
 
   Post.findOne({_id: id}, function(err, foundPost){
     res.render("post", {
       title: foundPost.title,
-      content: foundPost.content
+      content: foundPost.content,
+      id: foundPost._id
     })
   })
 
